@@ -1,18 +1,5 @@
-defmodule AnuIo do
+defmodule Anu.IO do
   @moduledoc """
-  Documentation for AnuIo.
+  Documentation for Anu.IO.
   """
-
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> AnuIo.hello()
-      :world
-
-  """
-  def hello do
-    :world
-  end
 end

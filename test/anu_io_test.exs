@@ -1,8 +1,4 @@
-defmodule AnuIoTest do
+defmodule Anu.IO.Test do
   use ExUnit.Case
-  doctest AnuIo
-
-  test "greets the world" do
-    assert AnuIo.hello() == :world
-  end
+  doctest Anu.IO
 end
