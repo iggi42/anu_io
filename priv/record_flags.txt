@@ -1,0 +1,21 @@
+0x00000020 	Deleted
+0x00000040 	Constant / (REFR) Hidden From Local Map (Needs Confirmation: Related to shields)
+0x00000100 	Must Update Anims / (REFR) Inaccessible
+0x00000200 	(REFR) Hidden from local map / (ACHR) Starts dead /(REFR) MotionBlurCastsShadows
+0x00000400 	Quest item / Persistent reference / (LSCR) Displays in Main Menu
+0x00000800 	Initially disabled
+0x00001000 	Ignored
+0x00008000 	Visible when distant
+0x00010000 	(ACTI) Random Animation Start
+0x00020000 	(ACTI) Dangerous / Off limits (Interior cell)
+0x00040000 	Data is compressed
+0x00080000 	Can't wait
+0x00100000 	(ACTI) Ignore Object Interaction
+0x00800000 	Is Marker
+0x02000000 	(ACTI) Obstacle / (REFR) No AI Acquire
+0x04000000 	NavMesh Gen - Filter
+0x08000000 	NavMesh Gen - Bounding Box
+0x10000000 	(FURN) Must Exit to Talk / (REFR) Reflected By Auto Water
+0x20000000 	(FURN/IDLM) Child Can Use / (REFR) Don't Havok Settle
+0x40000000 	NavMesh Gen - Ground / (REFR) NoRespawn
+0x80000000 	(REFR) MultiBound
