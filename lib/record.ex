@@ -68,7 +68,7 @@ defmodule Anu.IO.Record do
 
       @impl Anu.IO.Record
       def type do
-        unquote type
+        unquote(type)
       end
 
       Flag.define(
