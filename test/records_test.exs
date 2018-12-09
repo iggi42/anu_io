@@ -15,5 +15,4 @@ defmodule Anu.IO.Record.Test do
     assert [:navmesh_gen_bounding_box] == Anu.IO.Record.parse_flags(0x08_00_00_00)
     assert [:navmesh_gen_ground] == Anu.IO.Record.parse_flags(0x40_00_00_00)
   end
-
 end

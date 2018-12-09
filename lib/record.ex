@@ -4,6 +4,11 @@ defmodule Anu.IO.Record do
   [UESP Wiki](https://en.uesp.net/wiki/Tes5Mod:Mod_File_Format#Records).
   """
 
+  alias Anu.IO.Records.TES4
+
+  alias Anu.IO.Record.Flag
+  require Flag
+
   defstruct [:type, :id, :flags, :revision, :version, :data]
 
   @typedoc "an unsigned integer from 16 bits"
@@ -31,18 +36,17 @@ defmodule Anu.IO.Record do
   @doc "parse data segment"
   @callback parse_data(IO.device(), uint_32, [Anu.IO.Record.Flag.t()]) :: {IO.device(), struct()}
 
-  @records [
-    Anu.IO.Record.TES4
-  ]
+  @optional_callbacks [parse_flags: 2]
 
-  require Anu.IO.Record.Flag
+  # implemented records
+  @records [TES4]
 
-  Anu.IO.Record.Flag.define_flags(
+  Flag.define(
     deleted: 0x00_00_00_20,
     constant: 0x00_00_00_40,
     must_update_anims: 0x00_00_01_00,
     persistent_reference: 0x00_00_04_00,
-    initially_disabled:  0x00_00_08_00,
+    initially_disabled: 0x00_00_08_00,
     ignored: 0x00_00_10_00,
     distant_visible: 0x00_00_80_00,
     compressed_data: 0x00_04_00_00,
@@ -53,7 +57,28 @@ defmodule Anu.IO.Record do
     navmesh_gen_ground: 0x40_00_00_00
   )
 
-  @doc "TODO"
+  @doc false
+  defmacro __using__(args) do
+    type = Access.get(args, :type)
+    flags = Access.get(args, :flags)
+
+    quote do
+      @behaviour Anu.IO.Record
+      require Anu.IO.Record.Flag
+
+      @impl Anu.IO.Record
+      def type do
+        unquote type
+      end
+
+      Flag.define(
+        unquote do
+          flags
+        end
+      )
+    end
+  end
+
   @spec parse_record(IO.device()) :: t()
   def parse_record(device) do
     <<type>> = IO.binread(device, 4)
@@ -65,11 +90,14 @@ defmodule Anu.IO.Record do
     <<_unkown::size(16)>> = IO.binread(device, 2)
 
     [impl] = Enum.filter(@records, fn i -> i.type == type end)
-    {raw_flags, flags} = if(Module.defines?(impl, {:parse_flags, 2})) do
-      impl.parse_flags(raw_flags, [])
-    else
-      {raw_flags, []}
-    end
+
+    {raw_flags, flags} =
+      if Module.defines?(impl, {:parse_flags, 2}) do
+        impl.parse_flags(raw_flags, [])
+      else
+        {raw_flags, []}
+      end
+
     {_restbin, flags} = parse_flags(raw_flags, flags)
     {_device, data} = impl.parse_data(device, s, flags)
 
